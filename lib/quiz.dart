@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
+// A StatefulWidget that represents a quiz.
 class Quiz extends StatefulWidget {
   @override
   _QuizState createState() => _QuizState();
 }
 
+// State class for the Quiz widget.
 class _QuizState extends State<Quiz> {
-  int _score = 0;
-  int _questionIndex = 0;
+  // Stores the user's score.
+  int _score = 0; 
+  // Tracks the current question index.
+  int _questionIndex = 0; 
 
+  // List of questions and their details.
   List<Map<String, dynamic>> _questions = [
     {
       'question': 'What is the capital of France?',
@@ -27,6 +32,7 @@ class _QuizState extends State<Quiz> {
     },
   ];
 
+  // Function to check the user's answer.
   void _checkAnswer(String answer) {
     String correctAnswer = _questions[_questionIndex]['correctAnswer'];
     if (answer == correctAnswer) {
@@ -34,16 +40,18 @@ class _QuizState extends State<Quiz> {
         _score++;
       });
     }
-    _nextQuestion();
+    // Move to the next question.
+    _nextQuestion(); 
   }
 
+  // Function to move to the next question or show quiz completion dialog.
   void _nextQuestion() {
     if (_questionIndex < _questions.length - 1) {
       setState(() {
         _questionIndex++;
       });
     } else {
-      // Quiz completed
+      // Quiz completed, show a dialog.
       showDialog(
         context: context,
         builder: (context) {
@@ -54,7 +62,8 @@ class _QuizState extends State<Quiz> {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  _resetQuiz();
+                  // Reset quiz for a new attempt.
+                  _resetQuiz(); 
                 },
                 child: Text('OK'),
               ),
@@ -65,6 +74,7 @@ class _QuizState extends State<Quiz> {
     }
   }
 
+  // Function to reset the quiz.
   void _resetQuiz() {
     setState(() {
       _score = 0;
@@ -75,32 +85,38 @@ class _QuizState extends State<Quiz> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // App bar title and Custom app bar color.
       appBar: AppBar(
-        title: const Text('Quiz Tool'),
-        backgroundColor: Colors.blueGrey[900],
+        title: const Text('Quiz Tool'), 
+        backgroundColor: Colors.blueGrey[900], 
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              _questions[_questionIndex]['question'],
+              // Display the current question.
+              _questions[_questionIndex]['question'], 
               style: TextStyle(fontSize: 24),
             ),
             SizedBox(height: 20),
             Column(
               children: List<Widget>.generate(
                 _questions[_questionIndex]['answers'].length,
-                    (index) {
+                (index) {
                   String answer = _questions[_questionIndex]['answers'][index];
                   return ElevatedButton(
                     onPressed: () {
-                      _checkAnswer(answer);
-                    },style: ElevatedButton.styleFrom(
-                    primary: Colors.blueGrey[900],
-                    onPrimary: Colors.white,
-                  ),
-                    child: Text(answer),
+                      // Check the selected answer.
+                      _checkAnswer(answer); 
+                    },
+                    // Button style
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blueGrey[900], 
+                      onPrimary: Colors.white, 
+                    ),
+                    // Display answer text.
+                    child: Text(answer), 
                   );
                 },
               ),
@@ -114,13 +130,12 @@ class _QuizState extends State<Quiz> {
 
 void main() => runApp(QuizApp());
 
+// Main app widget that runs the Quiz widget.
 class QuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Quiz(),
+      home: Quiz(), // Set the Quiz widget as the home screen.
     );
   }
 }
-
-
